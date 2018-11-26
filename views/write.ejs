@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Your Post</title>
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    	 <link rel="stylesheet" type = "text/css" href="css/main.css">
+    	 <link rel="stylesheet" href="mCus/jquery.mCustomScrollbar.css" />
+    	  <!-- Font Awesome JS -->
+	    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+	    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+	    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	    <script src="mCus/jquery.mCustomScrollbar.concat.min.js"></script>
+	    <!-- Popper.JS -->
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+	    <!-- Bootstrap JS -->
+	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+	    <script type="text/javascript">
+				    $(document).ready(function () {
+				        $("#sidebar").mCustomScrollbar({
+				            theme: "minimal"
+				        });
+
+				        $('#dismiss, .overlay').on('click', function () {
+				            // hide sidebar
+				            $('#sidebar').removeClass('active');
+				            // hide overlay
+				            $('.overlay').removeClass('active');
+				        });
+
+				        $('#sidebarCollapse').on('click', function () {
+				            // open sidebar
+				            $('#sidebar').addClass('active');
+				            // fade in the overlay
+				            $('.overlay').addClass('active');
+				            $('.collapse.in').toggleClass('in');
+				            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+				        });
+				    });
+		 </script>
+	</head>
+	<body>
+		<script src = "js/writePost.js" data-id="wPScript"  one = <%= uS %>></script>
+		<!--Using px is apparently better than %-->
+    	<div class="container" style = "padding-top:150px">
+		  <div class="row">
+		    <div class="col-sm">
+		      <!--This is the section for the navbar-->
+		      <div class="wrapper">
+				    <!-- Sidebar -->
+				    <nav id="sidebar">
+				        <div id="dismiss">
+				            <i class="fas fa-arrow-left"></i>
+				        </div>
+
+				        <div class="sidebar-header">
+				            <h3><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Navigation</h3>
+				        </div>
+
+				        <ul class="list-unstyled components">
+				            <li>
+				                <a href = "/">Feed</a>
+				               	<%if (isLoggedIn) { %>
+				                <a href="profile/<%= uS['id']-1 %>">Profile</a>
+				                <% } %>
+				                <%if (!isLoggedIn) { %>
+				                <a href="#">Profile</a>
+				                <% } %>
+				                <a href="search">Search</a>
+				                <!--<ul class="collapse list-unstyled" id="homeSubmenu">
+				                    <li>
+				                        <a href="#">Home 1</a>
+				                    </li>
+				                    <li>
+				                        <a href="#">Home 2</a>
+				                    </li>
+				                    <li>
+				                        <a href="#">Home 3</a>
+				                    </li>
+				                </ul>-->
+				            </li>
+				            <li class = "active">
+				                <a>Write Post</a>
+				            </li>
+				            <li>
+				            	<a href = "logout">Logout</a>
+				            </li>
+				        </ul>
+				    </nav>
+
+				    <!-- Page Content -->
+				    <div id="content">
+				        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+				            <div class="container-fluid">
+
+				                <button type="button" id="sidebarCollapse" class="btn btn-info">
+				                    <i class="fas fa-align-left"></i>
+				                </button>
+				                <h1 id = "titlePage"><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Socialise</h1>
+				            </div>
+				        </nav>
+				    </div>
+				    <!-- Dark Overlay element -->
+				    <div class="overlay"></div>
+				</div>
+
+		      </div>
+		    </div>
+		    <div class = "row" style = "position:relative;z-index:0;">
+		    	<div class = "col-sm">
+			    	<div class="form-group">
+					  <label class = "media-heading" for="post">Post Content:</label>
+					  <textarea class="form-control" rows="5" id="post"></textarea>
+					  <button type="button" class="btn btn-default" id = "post-button">Post</button>
+					</div>
+				</div>
+		    </div>
+		</div>
+	</body>
+</html>
