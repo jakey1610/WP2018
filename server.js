@@ -68,7 +68,6 @@ app.get('/profile/:username', (req, res) => {
 				var user = json[u];
 			}
 		}
-		console.log(user)
 		fs.readFile('pmdbPosts.json', function(err, data){
 			var jsonPosts = JSON.parse(data);
 			var posts = [];
@@ -164,32 +163,44 @@ app.post('/writeTo', (req, res) =>{
 	});
 	
 });
+//Test the liking functionality
 app.post('/likesPost', (req, res) => {
-	var userID = req.session['user']['username'];
-	var postID = req.body['postID'];
-	fs.readFile('pmdbLikes.json', function(err,data){
+	var user = req.session['user']['username'];
+	if(user == -1){
+		return res.sendStatus(403);
+	}
+	fs.readFile('pmdbUsers.json', function(err, data){
+		var userID = -1;
 		var json = JSON.parse(data);
 		for(var object in json){
-			if(json[object]['id'] == userID && json[object]['post-id'] == postID){
-				return res.sendStatus(401);
+			if(json[object]['username']==user){
+				userID = json[object]['id'];
 			}
 		}
-		newLike = {
-			"id": userID,
-			"post-id": parseInt(postID)
-		}
-		json.push(newLike);
-		fs.writeFile("pmdbLikes.json", JSON.stringify(json));
-		fs.readFile('pmdbPosts.json', function(err,data1){
+		var postID = req.body['postID'];
+		fs.readFile('pmdbLikes.json', function(err,data1){
 			var json1 = JSON.parse(data1);
-			var post = json1[postID-1];
-			post['likes'] += 1;
-			json1[postID-1] = post;
-			fs.writeFile('pmdbPosts.json', JSON.stringify(json1));
+			for(var object1 in json1){
+				if(json1[object1]['id'] == userID && json1[object1]['post-id'] == postID){
+					return res.sendStatus(401);
+				}
+			}
+			newLike = {
+				"id": userID,
+				"post-id": parseInt(postID)
+			}
+			json1.push(newLike);
+			fs.writeFile("pmdbLikes.json", JSON.stringify(json1));
+			fs.readFile('pmdbPosts.json', function(err,data2){
+				var json2 = JSON.parse(data2);
+				var post = json2[postID-1];
+				post['likes'] += 1;
+				json2[postID-1] = post;
+				fs.writeFile('pmdbPosts.json', JSON.stringify(json2));
+			});
+			return res.sendStatus(200);
 		});
-		return res.sendStatus(200);
 	});
-
 }); 
 app.use(upload());
 //Make sure only images
@@ -239,6 +250,47 @@ app.get('/people/:username', (req,res)=>{
 		}
 		return res.send(JSON.stringify(user));
 	});
+});
+//Crashing when repeated comment????
+app.post('/commentMade', (req,res)=>{
+	var content = req.body['content'];
+	var postID = req.body['postID'];
+	if(req.session['user']['username']==-1){
+		return res.sendStatus(403);
+	}
+	var username = req.session['user']['username'];
+	fs.readFile('pmdbComments.json', function(err,data){
+		var json = JSON.parse(data);
+		var commentID = json[json.length-1]['commentID'] + 1;
+		fs.readFile('pmdbUsers.json', function(err,data1){
+			var json1 = JSON.parse(data1);
+			for(var object in json1){
+				if(json1[object]['username'] == username){
+					var userID = json1[object]['id'];
+				}
+			}
+			//anti spam feature
+			var status = true;
+			for(var object1 in json){
+				if(json[object1]['postID']==postID & json[object1]['userID']==userID & json[object1]['ccontent']==content){
+					status = false;
+				}
+			}
+			if(status){
+				var newComment = {
+					"commentID":parseInt(commentID),
+					"postID":parseInt(postID),
+					"userID":parseInt(userID),
+					"username":username,
+					"ccontent":content
+				};
+				json.push(newComment);
+				fs.writeFile('pmdbComments.json',JSON.stringify(json));
+			}
+			
+		});
+	});
+	return res.sendStatus(200);
 });
 app.listen(8888);
 console.log("Server online");

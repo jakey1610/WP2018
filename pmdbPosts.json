@@ -1,1 +1,1 @@
-[{"userID":1,"postID":1,"user":"Jake","content":"Hello all","likes":1},{"userID":1,"postID":2,"user":"Jake","content":"...","likes":1},{"userID":2,"postID":3,"user":"doctorwhocomposer","content":"I composed Doctor Who","likes":1},{"userID":1,"postID":4,"user":"Jake","content":"Hi","likes":1}]
+[{"userID":1,"postID":1,"user":"Jake","content":"Hello all","likes":2}]
