@@ -62,7 +62,9 @@
 					        <ul class="list-unstyled components">
 					            <li>
 					                <a href = "/">Feed</a>
-					                <a href="#">Profile</a>
+					                <%if (isLoggedIn) { %>
+					                <a href="profile/<%= uS['username'] %>">Profile</a>
+					                <% } %>
 					                <a href="search">Search</a>
 					            </li>
 					            <li class = "active">

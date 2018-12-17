@@ -62,10 +62,7 @@
 				            <li>
 				                <a href = "/">Feed</a>
 				               	<%if (isLoggedIn) { %>
-				                <a href="profile/<%= uS['id']-1 %>">Profile</a>
-				                <% } %>
-				                <%if (!isLoggedIn) { %>
-				                <a href="#">Profile</a>
+				                <a href="profile/<%= uS['username'] %>">Profile</a>
 				                <% } %>
 				                <a href="search">Search</a>
 				                <!--<ul class="collapse list-unstyled" id="homeSubmenu">

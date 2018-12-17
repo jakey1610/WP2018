@@ -76,8 +76,8 @@
 				            	<%if (isLoggedIn) { %>
 				                <a href="profile/<%= String(uS['username']) %>">Profile</a>
 				                <% } %>
-				                <%if (!isLoggedIn) { %>
-				                <a href="#">Profile</a>
+				                <%if (isLoggedIn) { %>
+				                <a href="profile/<%= uS['username']%>">Profile</a>
 				                <% } %>
 				                <a href="search">Search</a>
 				                <%if (!isLoggedIn) { %>

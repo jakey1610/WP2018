@@ -38,17 +38,21 @@ $(document).ready(function(){
 
 					if (taken){
 						$('#alertsregister').html('<p style = "color:red">This username is already taken.</p>');
+						return
 					} else if (passnomatch){
 						$('#alertsregister').html('<p style = "color:red">The passwords you have entered don\'t match.</p>');
+						return
 					} else if (noun){
 						$('#alertsregister').html('<p style = "color:red">You have not entered a username.</p>');
+						return
 					} else if (nops){
 						$('#alertsregister').html('<p style = "color:red">You have not entered a password.</p>');
+						return
 					} else {
 						$('#alertsregister').html('');
 						var userDetails = {
 							"id": data[data.length-1]['id'] +1,
-							"firstname": firstname,
+							"forename": firstname,
 							"surname": surname,
 							"username":username,
 							"ppicture":"ppexample.png",
