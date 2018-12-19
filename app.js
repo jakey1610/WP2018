@@ -9,12 +9,13 @@ var fs = require('fs');
 var ejs = require('ejs');
 var upload = require('express-fileupload');
 var app = express(); 
-app.use(session({secret:"kjasdhkjahsdkjaskjddhjh321j1j2kl1j", resave:false, saveUninitialized:true, cookie: { secure: false }}));
+app.use(session({secret:"kjasdhkjahsdkjaskjddhjh321j1j2kl1j", resave:false, saveUninitialized:true, cookie: { secure: false }, user:{login:false, username: -1}}));
 
 app.set('view engine', 'ejs');
 var options = {
 	extensions:['css', 'js', 'png', 'json', 'ejs']
 };
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('./', options));
 let isLoggedIn = false;
@@ -66,6 +67,8 @@ app.get('/profile/:username', (req, res) => {
 	fs.readFile('pmdbUsers.json', function(err, data){
 		var json = JSON.parse(data);
 		for(u in json){
+			console.log(req);
+			console.log(json[u]['username'], req.params['username']);
 			if(json[u]['username']==req.params['username']){
 				var user = json[u];
 			}
@@ -78,27 +81,64 @@ app.get('/profile/:username', (req, res) => {
 					posts.push(jsonPosts[object]);
 				}
 			}
-			res.render('profile', {
-			  isLoggedIn: isLoggedIn,
-			  uS:user,
-			  uP:posts,
-			  params: req.session['user']['username']
-			});
+			if(req.session['user'] == undefined){
+				res.render('profile', {
+				  isLoggedIn: false,
+				  uS:user,
+				  uP:posts,
+				  params: -1
+				});
+			} else {
+				res.render('profile', {
+				  isLoggedIn: isLoggedIn,
+				  uS:user,
+				  uP:posts,
+				  params: req.session['user']['username']
+				});
+			}
+			
 		});
 	});
 });
 app.get('/search', (req, res) => {
-	res.render('search', {
-	  isLoggedIn: isLoggedIn,
-	  uS:req.session['user']['username']
+	fs.readFile('pmdbUsers.json', function(err, data){
+		var json = JSON.parse(data);
+		
+		if(req.session['user']==undefined){
+			var user = -1;
+		} else{
+			for(u in json){
+				if(json[u]['username']==req.session['user']['username']){
+					var user = json[u];
+				}
+			}
+		}
+		
+		res.render('search', {
+		  isLoggedIn: isLoggedIn,
+		  uS:user
+		});
 	});
+	
 });
 app.get('/write', (req, res) => {
-	//redirect if not logged in
-	res.render('write', {
-	  isLoggedIn: isLoggedIn,
-	  //Potentially need to reduce this by 1
-	  uS:req.session['user']['username']
+	fs.readFile('pmdbUsers.json', function(err, data){
+		var json = JSON.parse(data);
+		if(req.session['user']==undefined){
+			var user = -1;
+		} else{
+			for(u in json){
+				if(json[u]['username']==req.session['user']['username']){
+					var user = json[u];
+				}
+			}
+		}
+		//redirect if not logged in
+		res.render('write', {
+		  isLoggedIn: isLoggedIn,
+		  //Potentially need to reduce this by 1
+		  uS:user
+		});
 	});
 });
 app.use(express.json());
@@ -118,7 +158,7 @@ app.post('/login', (req, res) => {
 	    var jsonReq = req.body
 	    for(var object in json){
 	    	var salt = genRandomString(16);
-	    	//The password comparison is not quite right because of the salt.
+	    	//The password comparison is not quite right because of the salt. Need to store salt elsewhere
 	    	if(json[object]['username'] != undefined && json[object]['username'] == jsonReq['username'] && json[object]['password']['passwordHash']==sha512(jsonReq['password'],json[object]['password']['salt'])['passwordHash']){
 	    		stat = true;
 	    		isLoggedIn = true;
@@ -223,11 +263,13 @@ app.post('/fileUpload', (req,res) => {
 							var userID = json[u]['id'];
 						}
 					}
-					fs.unlink(json[userID-1]['ppicture'],function(err){
-						if(err){
-							console.log(err);
-						}
-					});
+					if(json[userID-1]['ppicture'] != "ppexample.png"){
+						fs.unlink(json[userID-1]['ppicture'],function(err){
+							if(err){
+								console.log(err);
+							}
+						});
+					}
 					json[userID-1]['ppicture'] = "/img/"+fileName;
 					fs.writeFile('pmdbUsers.json', JSON.stringify(json));
 				});
@@ -338,6 +380,10 @@ app.post('/commentMade', (req,res)=>{
 		});
 	});
 	return res.sendStatus(200);
+});
+
+app.get('*', (req,res)=>{
+	res.render('notFound.ejs');
 });
 app.listen(8888);
 module.exports = app;

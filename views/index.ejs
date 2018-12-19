@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    	 <link rel="stylesheet" type = "text/css" href="css/main.css">
+    	 <link rel="stylesheet" type = "text/css" href="../css/main.css">
     	 <link rel="stylesheet" href="mCus/jquery.mCustomScrollbar.css" />
     	  <!-- Font Awesome JS -->
 	    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
@@ -54,7 +54,7 @@
 				        </div>
 
 				        <div class="sidebar-header">
-				            <h3><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Navigation</h3>
+				            <h3><span class="glyphicon glyphicon-chevron-right" aria-hidden="true", height = 10, width = 10><span style = "font-family: 'Poppins', sans-serif;">Navigation </span><i class = "blink" style = "font-weight:bold;">_</i></h3>
 				        </div>
 
 				        <ul class="list-unstyled components">
@@ -76,9 +76,6 @@
 				            	<%if (isLoggedIn) { %>
 				                <a href="profile/<%= String(uS['username']) %>">Profile</a>
 				                <% } %>
-				                <%if (isLoggedIn) { %>
-				                <a href="profile/<%= uS['username']%>">Profile</a>
-				                <% } %>
 				                <a href="search">Search</a>
 				                <%if (!isLoggedIn) { %>
 				                <a href="login">Login/Register</a>
@@ -99,7 +96,7 @@
 				                <button type="button" id="sidebarCollapse" class="btn btn-info">
 				                    <i class="fas fa-align-left"></i>
 				                </button>
-				                <h1 id = "titlePage"><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Socialise</h1>
+				                <h1 id = "titlePage"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true", height = 10, width = 10><span style = "font-family: 'Poppins', sans-serif;">Socialise</span><i class = "blink" style = "font-weight:bold;">_</i></h1>
 				            </div>
 				        </nav>
 				    </div>

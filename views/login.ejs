@@ -56,14 +56,14 @@
 					        </div>
 
 					        <div class="sidebar-header">
-					            <h3><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Navigation</h3>
+					            <h3><span class="glyphicon glyphicon-chevron-right" aria-hidden="true", height = 10, width = 10><span style = "font-family: 'Poppins', sans-serif;">Navigation </span><i class = "blink" style = "font-weight:bold;">_</i></h3>
 					        </div>
 
 					        <ul class="list-unstyled components">
 					            <li>
 					                <a href = "/">Feed</a>
 					                <%if (isLoggedIn) { %>
-					                <a href="profile/<%= uS['username'] %>">Profile</a>
+					                <a href="profile/<%= String(uS['username']) %>">Profile</a>
 					                <% } %>
 					                <a href="search">Search</a>
 					            </li>
@@ -81,7 +81,7 @@
 					                <button type="button" id="sidebarCollapse" class="btn btn-info">
 					                    <i class="fas fa-align-left"></i>
 					                </button>
-					                <h1 id = "titlePage"><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Socialise</h1>
+					                <h1 id = "titlePage"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true", height = 10, width = 10><span style = "font-family: 'Poppins', sans-serif;">Socialise</span><i class = "blink" style = "font-weight:bold;">_</i></h1>
 					            </div>
 					        </nav>
 					    </div>

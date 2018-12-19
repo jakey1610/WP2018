@@ -1,10 +1,22 @@
-
+@import "compass/css3";
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 body {
     font-family: 'Poppins', sans-serif;
-    background: #fafafa;
 }
-@import "compass/css3";
+.blink {
+    -webkit-animation: blink 1s step-end infinite;
+    animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  from, to { opacity: 0; }
+  
+  50% {opacity: 1;}
+}
+@-webkit-keyframes blink {
+  from, to { opacity: 0; }
+  
+  50% {opacity: 1;}
+}
 #profile-box{
     width:100%;
 }

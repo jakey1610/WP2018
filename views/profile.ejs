@@ -42,6 +42,8 @@
 	</head>
 	<body>
 		<script src = "../js/likeClick.js"></script>
+		<script src = "../js/profilePosts.js"></script>
+		<script>window.onload = postPage;</script>
 		<!--<script src = "../js/photoChange.js"></script>-->
 		<div class = "container">
 			<div class="row">
@@ -55,7 +57,7 @@
 				        </div>
 
 				        <div class="sidebar-header">
-				            <h3><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Navigation</h3>
+				            <h3><span class="glyphicon glyphicon-chevron-right" aria-hidden="true", height = 10, width = 10><span style = "font-family: 'Poppins', sans-serif;">Navigation </span><i class = "blink" style = "font-weight:bold;">_</i></h3>
 				        </div>
 
 				        <ul class="list-unstyled components">
@@ -97,7 +99,7 @@
 				                <button type="button" id="sidebarCollapse" class="btn btn-info">
 				                    <i class="fas fa-align-left"></i>
 				                </button>
-				                <h1 id = "titlePage"><span class="glyphicon glyphicon-console" aria-hidden="true", height = 10, width = 10></span> Socialise</h1>
+				                <h1 id = "titlePage"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true", height = 10, width = 10><span style = "font-family: 'Poppins', sans-serif;">Socialise</span><i class = "blink" style = "font-weight:bold;">_</i></h1>
 				            </div>
 				        </nav>
 				    </div>
@@ -129,29 +131,7 @@
 						</div>
 				    </li>
 				    <li class = "well well-lg" id = "recent-posts-box">
-				    	<h1>Recent Posts</h1>
-				    	<% for(var object in uP) { %>
-				    	<div class="media" style = "margin-top:3%; float:bottom;">
-							  <div class="media-left media-middle">
-							    <a href="#">
-							      <img class="media-object" src="../<%= uS['ppicture'] %>" alt="Profile Picture Example" height = 50, width = 50>
-							    </a>
-							  </div>
-							  <div class="media-body">
-							    <h4 class="media-heading"><a href = "#"><%= uP[object]['user'] %></a></h4>
-							    <%= uP[object]['content'] %>
-							  </div>
-							  <button class = "btn-info like-button" id = "like<%=uP[object]['postID']%>"><span class = "glyphicon glyphicon-thumbs-up" aria-hidden="true" style = "color:white;margin-left:10%;" ></span></button>
-				  			  <p class = "likeCounter"><%= uP[object]['likes'] %></p>
-						</div>
-						<% } %>
-						<% if(uP.length == 0){ %>
-						<div class="media" style = "margin-top:3%; float:bottom;">
-							  <div class="media-body">
-							    <h4 class="media-heading"><a href = "#">No posts yet...</a></h4>
-							  </div>
-						</div>
-						<% } %>
+						
 				    </li>
 				</ul>
 		      </div>
