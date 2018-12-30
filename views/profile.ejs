@@ -41,7 +41,6 @@
 		 </script>
 	</head>
 	<body>
-		<script src = "../js/likeClick.js"></script>
 		<script src = "../js/profilePosts.js"></script>
 		<script>window.onload = postPage;</script>
 		<!--<script src = "../js/photoChange.js"></script>-->
@@ -75,9 +74,13 @@
 				                    </li>
 				                </ul>-->
 				            </li>
+				            <%if (String(uS) == params['username']) { %>
 				            <li class = "active">
 				                <a>Profile</a>
 				            </li>
+				            <%} else if(isLoggedIn) { %>
+				            <li><a href = "../profile/<%= String(uS) %>">Profile</a></li>
+				            <% } %>
 				            <li>
 				            	<a href="../search">Search</a>
 				                <%if (!isLoggedIn) { %>
@@ -113,21 +116,21 @@
 				    <li class = "well well-lg" id = "profile-box">
 				    	<div class="page-header">
 				    		<div class = "flex-container-profile">
-					    		<div class = "flex-item-profile"><h1 id = "name"><%= uS['forename'] + " " + uS['surname'] %></h1></div>
+					    		<div class = "flex-item-profile"><h1 id = "name"><%= params['forename'] + " " + params['surname'] %></h1></div>
 					    		<div class="media-left media-middle flex-item-profile">
 					    			<a href="#">
-					      				<img id = "ppProfile" src="../<%= uS['ppicture'] %>" alt="..." style = "height:150px;width:150px;">
+					      				<img id = "ppProfile" src="../<%= params['ppicture'] %>" alt="..." style = "height:150px;width:150px;">
 					    			</a>
 					  			</div>
 					  		</div>
 				  			<!--No files are being sent to the server in this section -->
-				  			<% if(uS['username']==params){ %>
+				  			<% if(params['username']==uS){ %>
 				  			<form action="/fileUpload" enctype="multipart/form-data"  method="post">
 				  			<div>Update Picture:<input type = "file" class = "btn btn-primary pp-button" id = "pp<%=uS['id']%>" style = "position:relative; z-index:1" name = "filename" size = '50'></input></div>
 				  			<input type = "submit" style = "position:relative; z-index:1" value = "Upload">
 				  			</form>
 				  			<% } %>
-				  			<p id = "memSince">Member since: <%= uS['memberDate'] %></p>
+				  			<p id = "memSince">Member since: <%= params['memberDate'] %></p>
 						</div>
 				    </li>
 				    <li class = "well well-lg" id = "recent-posts-box">

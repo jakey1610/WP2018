@@ -1,4 +1,3 @@
-//Check path from write post to profile.
 var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
@@ -24,21 +23,17 @@ var genRandomString = function(length){
             .toString('hex')
             .slice(0,length); 
 };
-var sha512 = function(password, salt){
-    var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+var sha512 = function(password){
+    var hash = crypto.createHmac('sha512', "81aaba81a9f60d41"); /** Hashing algorithm sha512 */
     hash.update(password);
     var value = hash.digest('hex');
-    return {
-        salt:salt,
-        passwordHash:value
-    };
+    return value;
 };
 function saltHashPassword(userpassword) {
-    var salt = genRandomString(16); /** Gives us salt of length 16 */
-    var passwordData = sha512(userpassword, salt);
+    // var salt = genRandomString(16); * Gives us salt of length 16 
+    var passwordData = sha512(userpassword);
     return passwordData;
 }
-
 
 app.get('/', (req, res) => {
 	if(!isLoggedIn){
@@ -67,11 +62,12 @@ app.get('/profile/:username', (req, res) => {
 	fs.readFile('pmdbUsers.json', function(err, data){
 		var json = JSON.parse(data);
 		for(u in json){
-			console.log(req);
-			console.log(json[u]['username'], req.params['username']);
 			if(json[u]['username']==req.params['username']){
 				var user = json[u];
 			}
+		}
+		if(user == undefined){
+			return res.status(404).render('notFound.ejs');
 		}
 		fs.readFile('pmdbPosts.json', function(err, data){
 			var jsonPosts = JSON.parse(data);
@@ -82,18 +78,19 @@ app.get('/profile/:username', (req, res) => {
 				}
 			}
 			if(req.session['user'] == undefined){
+				req.session['user'] = {login:false, username:-1};
 				res.render('profile', {
 				  isLoggedIn: false,
-				  uS:user,
+				  uS:{login:false, username:-1},
 				  uP:posts,
-				  params: -1
+				  params: req.params['username']
 				});
 			} else {
 				res.render('profile', {
 				  isLoggedIn: isLoggedIn,
-				  uS:user,
+				  uS:req.session['user']['username'],
 				  uP:posts,
-				  params: req.session['user']['username']
+				  params: user
 				});
 			}
 			
@@ -157,9 +154,7 @@ app.post('/login', (req, res) => {
 	    var json = JSON.parse(data);
 	    var jsonReq = req.body
 	    for(var object in json){
-	    	var salt = genRandomString(16);
-	    	//The password comparison is not quite right because of the salt. Need to store salt elsewhere
-	    	if(json[object]['username'] != undefined && json[object]['username'] == jsonReq['username'] && json[object]['password']['passwordHash']==sha512(jsonReq['password'],json[object]['password']['salt'])['passwordHash']){
+	    	if(json[object]['username'] != undefined && json[object]['username'] == jsonReq['username'] && json[object]['password']==sha512(jsonReq['password'])){
 	    		stat = true;
 	    		isLoggedIn = true;
 	    		req.session.user = {login:true, username: json[object]['username']};
@@ -199,7 +194,7 @@ app.post('/writeTo', (req, res) =>{
 		    	"likes":0
 		    }
 		    json2.push(newPost);
-		    fs.writeFile("pmdbPosts.json", JSON.stringify(json2));
+		    fs.writeFile("pmdbPosts.json", JSON.stringify(json2), function(err){if(err) console.log(err);});
 		    return res.sendStatus(200)
 		});
 	});
@@ -232,13 +227,13 @@ app.post('/likesPost', (req, res) => {
 				"post-id": parseInt(postID)
 			}
 			json1.push(newLike);
-			fs.writeFile("pmdbLikes.json", JSON.stringify(json1));
+			fs.writeFile("pmdbLikes.json", JSON.stringify(json1), function(err){if(err) console.log(err);});
 			fs.readFile('pmdbPosts.json', function(err,data2){
 				var json2 = JSON.parse(data2);
 				var post = json2[postID-1];
 				post['likes'] += 1;
 				json2[postID-1] = post;
-				fs.writeFile('pmdbPosts.json', JSON.stringify(json2));
+				fs.writeFile('pmdbPosts.json', JSON.stringify(json2), function(err){if(err) console.log(err);});
 			});
 			return res.sendStatus(200);
 		});
@@ -340,7 +335,7 @@ app.post('/people', (req,res)=>{
 	}
 	return res.sendStatus(400);
 });
-//Crashing when repeated comment????
+
 app.post('/commentMade', (req,res)=>{
 	var content = req.body['content'];
 	var postID = req.body['postID'];
@@ -358,10 +353,9 @@ app.post('/commentMade', (req,res)=>{
 					var userID = json1[object]['id'];
 				}
 			}
-			//anti spam feature
 			var status = true;
 			for(var object1 in json){
-				if(json[object1]['postID']==postID & json[object1]['userID']==userID & json[object1]['ccontent']==content){
+				if(json[object1]['commentID'] == commentID & json[object1]['postID']==postID & json[object1]['userID']==userID & json[object1]['ccontent']==content){
 					status = false;
 				}
 			}
@@ -374,7 +368,7 @@ app.post('/commentMade', (req,res)=>{
 					"ccontent":content
 				};
 				json.push(newComment);
-				fs.writeFile('pmdbComments.json',JSON.stringify(json));
+				fs.writeFile('pmdbComments.json',JSON.stringify(json), function(err){if(err) console.log(err);});
 			}
 			
 		});
@@ -382,7 +376,7 @@ app.post('/commentMade', (req,res)=>{
 	return res.sendStatus(200);
 });
 
-app.get('*', (req,res)=>{
+app.all('*', (req,res)=>{
 	res.render('notFound.ejs');
 });
 app.listen(8888);
