@@ -1,3 +1,4 @@
+var mime = require('mime-types');
 var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
@@ -244,33 +245,38 @@ app.use(upload());
 app.post('/fileUpload', (req,res) => {
 	if(req.files){
 		var file = req.files.filename;
-		var fileName = file.name;
-		file.mv("./img/" + fileName, function(err){
-			if(err){
-				console.log(err);
-				return res.sendStatus(404);
-			} else {
-				
-				fs.readFile('pmdbUsers.json', function(err, data){
-					var json = JSON.parse(data);
-					for(u in json){
-						if(json[u]['username']==req.session['user']['username']){
-							var userID = json[u]['id'];
-						}
-					}
-					if(json[userID-1]['ppicture'] != "ppexample.png"){
-						fs.unlink(json[userID-1]['ppicture'],function(err){
-							if(err){
-								console.log(err);
+		if(String(mime.lookup(file)).includes("image")){
+			var fileName = file.name;
+			file.mv("./img/" + fileName, function(err){
+				if(err){
+					console.log(err);
+					return res.sendStatus(404);
+				} else {
+					
+					fs.readFile('pmdbUsers.json', function(err, data){
+						var json = JSON.parse(data);
+						for(u in json){
+							if(json[u]['username']==req.session['user']['username']){
+								var userID = json[u]['id'];
 							}
-						});
-					}
-					json[userID-1]['ppicture'] = "/img/"+fileName;
-					fs.writeFile('pmdbUsers.json', JSON.stringify(json));
-				});
-				return res.redirect('/');
-			}
-		});
+						}
+						if(json[userID-1]['ppicture'] != "ppexample.png"){
+							fs.unlink(json[userID-1]['ppicture'],function(err){
+								if(err){
+									console.log(err);
+								}
+							});
+						}
+						json[userID-1]['ppicture'] = "/img/"+fileName;
+						fs.writeFile('pmdbUsers.json', JSON.stringify(json), function(err){if(err) console.log(err);});
+					});
+					return res.redirect('/');
+				}
+			});
+		} else {
+			return res.redirect(403,'/');
+		}
+		
 	}
 });
 app.get('/people', (req,res)=>{
