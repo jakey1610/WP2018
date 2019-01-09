@@ -29,18 +29,33 @@ body {
     margin-left:5%;
     margin-right:5%;
 }
+#PPusername{
+    color:gray;
+    font-size:20px;
+}
 
 #memSince{
     float:right;
     font-size:22px;
     margin-right:5%;
-    margin-top:-2%;
+    margin-top:2%;
     color:black;
 }
 .likeCounter{
     display:inline;
     margin-left:2%;
     font-size:10px;
+}
+
+.roundPP{
+    border-radius: 50%;
+    border-color:black;
+    border-width:1px;
+    border-style:solid;
+}
+
+.like-button{
+    margin-top:10px;
 }
 
 #ppProfile{

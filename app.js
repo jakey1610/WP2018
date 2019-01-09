@@ -1,4 +1,4 @@
-var mime = require('mime-types');
+//Do some registration validation.
 var path = require('path');
 var bodyParser = require('body-parser');
 var express = require('express');
@@ -245,12 +245,11 @@ app.use(upload());
 app.post('/fileUpload', (req,res) => {
 	if(req.files){
 		var file = req.files.filename;
-		if(String(mime.lookup(file)).includes("image")){
+		if(String(file.mimetype).includes("image")){
 			var fileName = file.name;
 			file.mv("./img/" + fileName, function(err){
 				if(err){
-					console.log(err);
-					return res.sendStatus(404);
+					res.redirect('/');
 				} else {
 					
 					fs.readFile('pmdbUsers.json', function(err, data){
@@ -270,11 +269,11 @@ app.post('/fileUpload', (req,res) => {
 						json[userID-1]['ppicture'] = "/img/"+fileName;
 						fs.writeFile('pmdbUsers.json', JSON.stringify(json), function(err){if(err) console.log(err);});
 					});
-					return res.redirect('/');
+					res.status(200).redirect('/');
 				}
 			});
 		} else {
-			return res.redirect(403,'/');
+			res.status(403).redirect('/');
 		}
 		
 	}

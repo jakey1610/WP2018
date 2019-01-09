@@ -62,17 +62,6 @@
 				        <ul class="list-unstyled components">
 				            <li>
 				                <a href = "../">Feed</a>
-				                <!--<ul class="collapse list-unstyled" id="homeSubmenu">
-				                    <li>
-				                        <a href="#">Home 1</a>
-				                    </li>
-				                    <li>
-				                        <a href="#">Home 2</a>
-				                    </li>
-				                    <li>
-				                        <a href="#">Home 3</a>
-				                    </li>
-				                </ul>-->
 				            </li>
 				            <%if (String(uS) == params['username']) { %>
 				            <li class = "active">
@@ -116,7 +105,7 @@
 				    <li class = "well well-lg" id = "profile-box">
 				    	<div class="page-header">
 				    		<div class = "flex-container-profile">
-					    		<div class = "flex-item-profile"><h1 id = "name"><%= params['forename'] + " " + params['surname'] %></h1></div>
+					    		<div class = "flex-item-profile"><h1 id= "name"><%= params['forename'] + " " + params['surname'] %> <a id = "PPusername">(<%= params['username'] %>)</a></h1></div>
 					    		<div class="media-left media-middle flex-item-profile">
 					    			<a href="#">
 					      				<img id = "ppProfile" src="../<%= params['ppicture'] %>" alt="..." style = "height:150px;width:150px;">
