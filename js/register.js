@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('#register-button').click(function(){
+	$('#register-button').off('click').click(function(){
 		var username = $('#unr').val();
 		var firstname = $('#fnr').val();
 		var surname = $('#snr').val();
@@ -74,7 +74,7 @@ $(document).ready(function(){
 
 						        }
 				    		});
-						});
+					   });
 						
 					}
 

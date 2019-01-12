@@ -142,10 +142,12 @@ app.get('/write', (req, res) => {
 app.use(express.json());
 app.post('/register', (req, res) => {
 	fs.readFile('pmdbUsers.json', function (err, data) {
+	   console.log(data);
 	    var json = JSON.parse(data);
+	    console.log(json);
 	    req.body['password'] = saltHashPassword(req.body['password']);
 	    json.push(req.body);
-	    fs.writeFile("pmdbUsers.json", JSON.stringify(json));
+	    fs.writeFile("pmdbUsers.json", JSON.stringify(json), function(err1){if(err1) console.log(err1);});
 	});
 	return res.sendStatus(200);
 });
