@@ -9,6 +9,11 @@ var fs = require('fs');
 var ejs = require('ejs');
 var upload = require('express-fileupload');
 var app = express(); 
+var https = require('https');
+var privateKey  = fs.readFileSync('ssl/host.key', 'utf8');
+var certificate = fs.readFileSync('ssl/host.cert', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+var httpsServer = https.createServer(credentials, app);
 app.use(session({secret:"kjasdhkjahsdkjaskjddhjh321j1j2kl1j", resave:false, saveUninitialized:true, cookie: { secure: false }, user:{login:false, username: -1}}));
 
 app.set('view engine', 'ejs');
@@ -387,6 +392,7 @@ app.all('*', (req,res)=>{
 	res.render('notFound.ejs');
 });
 app.listen(8888);
+httpsServer.listen(8080);
 module.exports = app;
 console.log("Server online");
 

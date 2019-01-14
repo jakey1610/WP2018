@@ -65,10 +65,10 @@ $(document).ready(function(){
 								data: JSON.stringify(userDetails),
 								datatype:'json',
 								contentType: 'application/json',
-					            url: 'http://localhost:8888/register',						
+					            url: 'https://localhost:8080/register',						
 					            success: function(data) {
 					                console.log('success');
-					                window.open('http://localhost:8888/login', "_self");
+					                window.open('https://localhost:8080/login', "_self");
 					            },
 						        error: function (xhr, ajaxOptions, thrownError) {
 

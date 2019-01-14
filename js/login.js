@@ -1,3 +1,4 @@
+//Fix https requests
 $(document).ready(function(){
 	$('#login-button').click(function(){
 		var username = $('#un').val();
@@ -35,10 +36,10 @@ $(document).ready(function(){
 								data: JSON.stringify(userDetails),
 								datatype:'json',
 								contentType: 'application/json',
-					            url: 'http://localhost:8888/login',						
+					            url: 'https://localhost:8080/login',						
 					            success: function(data) {
 					                if (data == "OK"){
-										window.open('http://localhost:8888/', "_self");
+										window.open('https://localhost:8080/', "_self");
 					                }
 					            },
 						        error: function (xhr, ajaxOptions, thrownError) {
