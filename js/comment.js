@@ -12,7 +12,7 @@ $(document).ready(function(){
 			data: JSON.stringify(dataSend),
 			datatype:'json',
 			contentType: 'application/json',
-			url: 'http://localhost:8888/commentMade',
+			url: 'https://localhost:8080/commentMade',
 			success: function(data){
 				console.log("made");
 				$('#comment' + postID).val('');

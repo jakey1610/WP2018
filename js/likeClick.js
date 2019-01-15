@@ -10,7 +10,7 @@ $(document).ready(function(){
 			data: JSON.stringify(idJ),
 			datatype:'json',
 			contentType: 'application/json',
-			url: 'http://localhost:8888/likesPost',
+			url: 'https://localhost:8080/likesPost',
 			success: function(data){
 				if(data != "OK"){
 					console.log("Already liked.");

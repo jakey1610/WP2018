@@ -16,7 +16,7 @@ $(document).ready(function(){
 			url: 'http://localhost:8888/writeTo',						
 			success: function(data) {
 				if (data == "OK"){
-					window.open('http://localhost:8888/', "_self");
+					window.open('https://localhost:8080/', "_self");
 				}
 			},
 			error: function (xhr, ajaxOptions, thrownError) {

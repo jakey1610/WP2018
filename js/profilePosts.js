@@ -14,7 +14,7 @@ function postPage(){
 						var uSSet = data1;
 						var message = "<script src = '../js/likeClick.js'></script><h1>Recent Posts</h1>";
 						//change for http://domain.com/ + profile???
-						var username = String(window.location.href).replace('http://localhost:8888/profile/', '');
+						var username = String(window.location.href).replace('https://localhost:8080/profile/', '');
 						for(var object in uSSet){
 							if(uSSet[object]['username'] == username.trim()){
 								var uS = uSSet[object];

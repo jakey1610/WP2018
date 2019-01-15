@@ -391,7 +391,7 @@ app.post('/commentMade', (req,res)=>{
 app.all('*', (req,res)=>{
 	res.render('notFound.ejs');
 });
-app.listen(8888);
+// app.listen(8888);
 httpsServer.listen(8080);
 module.exports = app;
 console.log("Server online");
