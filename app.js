@@ -40,7 +40,16 @@ function saltHashPassword(userpassword) {
     var passwordData = sha512(userpassword);
     return passwordData;
 }
-
+/*app.get('/pmdbUsers.json', (req, res)=>{
+	if(req.headers.access_token == "concertina"){
+		fs.readFile('pmdbUsers.json', function(err,data){
+			var json = JSON.parse(data);
+			res.status(200).send(json);
+		});
+	} else {
+		res.sendStatus(403);
+	}
+})*/
 app.get('/', (req, res) => {
 	if(!isLoggedIn){
 		req.session.user={login:false, username:-1}

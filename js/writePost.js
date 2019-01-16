@@ -13,7 +13,7 @@ $(document).ready(function(){
 			data: JSON.stringify(newPost),
 			datatype:'json',
 			contentType: 'application/json',
-			url: 'http://localhost:8888/writeTo',						
+			url: 'https://localhost:8080/writeTo',						
 			success: function(data) {
 				if (data == "OK"){
 					window.open('https://localhost:8080/', "_self");

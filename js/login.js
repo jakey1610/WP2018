@@ -26,7 +26,7 @@ $(document).ready(function(){
 					} else {
 						
 						var userDetails = {
-							//Potential for a replay attack
+							//Potential for a replay attack; could generate random nonce.
 							"username":username,
 							"password":password
 						}
